@@ -1,13 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import routes from './routes/movieRoutes.js';
+import 'dotenv/config'
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Connect to database
-//  connectDB();
-
+const PORT = process.env.PORT;
 // Middleware
 app.use(helmet());
 app.use(cors());
@@ -16,8 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // Routes
-const movieRoutes = require('./routes/movieRoutes');
-app.use('/api/movies', movieRoutes);
+app.use('/api/movies', routes);
 
 app.get('/', (req, res) => {
   res.json({ 
@@ -27,7 +24,7 @@ app.get('/', (req, res) => {
       trending: '/api/movies/trending',
       recommendations: '/api/movies/:id/recommendations'
     }
-  }); ui8 
+  });
 });
 
 // Error handling
@@ -40,5 +37,3 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 MvRec server running on http://localhost:${PORT}`);
 });
-
-module.exports = app;

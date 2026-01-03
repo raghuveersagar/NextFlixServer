@@ -1,65 +1,71 @@
-import movieService from '../services/movieService';
-const Movie = require('../models/Movie');
+import {
+  searchMovies as searchMoviesSvc,
+  getMovieDetails as getMovieDetailsSvc,
+  getRecommendations as getRecommendationsSvc,
+  getTrending as getTrendingSvc,
+  getPopular as getPopularSvc,
+  getByGenre as getByGenreSvc
+} from "../services/movieService.js";
 
-exports.searchMovies = async (req, res) => {
+export const searchMovies = async (req, res) => {
   try {
     const { q, page } = req.query;
     if (!q) {
       return res.status(400).json({ error: 'Search query is required' });
     }
-    const results = await movieService.searchMovies(q, page);
+    const results = await searchMoviesSvc(q, page);
     res.json(results);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.getMovieDetails = async (req, res) => {
+export const getMovieDetails = async (req, res) => {
   try {
     const { id } = req.params;
-    const movie = await movieService.getMovieDetails(id);
+    const movie = await getMovieDetailsSvc(id);
     res.json(movie);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.getRecommendations = async (req, res) => {
+export const getRecommendations = async (req, res) => {
   try {
     const { id } = req.params;
     const { page } = req.query;
-    const recommendations = await movieService.getRecommendations(id, page);
+    const recommendations = await getRecommendationsSvc(id, page);
     res.json(recommendations);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.getTrending = async (req, res) => {
+export const getTrending = async (req, res) => {
   try {
     const { timeWindow } = req.query;
-    const trending = await movieService.getTrending(timeWindow);
+    const trending = await getTrendingSvc(timeWindow);
     res.json(trending);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.getPopular = async (req, res) => {
+export const getPopular = async (req, res) => {
   try {
     const { page } = req.query;
-    const popular = await movieService.getPopular(page);
+    const popular = await getPopularSvc(page);
     res.json(popular);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.getByGenre = async (req, res) => {
+export const getByGenre = async (req, res) => {
   try {
     const { genreId } = req.params;
     const { page } = req.query;
-    const movies = await movieService.getByGenre(genreId, page);
+    const movies = await getByGenreSvc(genreId, page);
     res.json(movies);
   } catch (error) {
     res.status(500).json({ error: error.message });

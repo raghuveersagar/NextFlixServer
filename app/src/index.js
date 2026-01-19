@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import routes from './routes/movieRoutes.js';
-import 'dotenv/config'
+import 'dotenv/config';
 
 const app = express();
 const PORT = process.env.PORT;

@@ -4,7 +4,8 @@ import {
   getRecommendations as getRecommendationsSvc,
   getTrending as getTrendingSvc,
   getPopular as getPopularSvc,
-  getByGenre as getByGenreSvc
+  getByGenre as getByGenreSvc,
+  discoverMovies as discoverMoviesSvc
 } from "../services/movieService.js";
 
 export const searchMovies = async (req, res) => {
@@ -66,6 +67,18 @@ export const getByGenre = async (req, res) => {
     const { genreId } = req.params;
     const { page } = req.query;
     const movies = await getByGenreSvc(genreId, page);
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const discoverMovies = async (req, res) => {
+  try {
+    console.log(req.query);
+    const { page, sortBy, year, minRating, maxRating, genres, withCast, withCrew, language,q } = req.query;
+    const options = { page, sortBy, year, minRating, maxRating, genres, withCast, withCrew, language, query: q };
+    const movies = await discoverMoviesSvc(options);
     res.json(movies);
   } catch (error) {
     res.status(500).json({ error: error.message });
